@@ -12,20 +12,11 @@ from CTkTable import *
 import numpy as np
 import time
 from asyncio import run
-import pandas as pd
-from io import StringIO
 
 
-
-
-import requests
-
-from bs4 import BeautifulSoup
-
-# from playwright.sync_api import sync_playwright
-
-# sync_playwright.fire
-
+from browser_driver import BrowserDriver
+browser_instance = BrowserDriver()
+driver = browser_instance.driver
 
 
 
@@ -36,242 +27,7 @@ customtkinter.set_default_color_theme("dark-blue")  # Themes: "blue" (standard),
 
 # root = customtkinter.CTk()
 
-# DOM SELECTORS
-# GENEL OTO DOM SELECTORS
-# MARKA
-#pDataTable tbody td:nth-child(5)
-# ÜRETİCİ KODU
-#pDataTable tbody td:nth-child(6)
-#  OEM
-#pDataTable tbody td:nth-child(7)
-#  ÜRÜN ADI
-#pDataTable tbody td:nth-child(8)
-#  AÇIKLAMA
-#pDataTable tbody td:nth-child(9)
-#  İÇERİK
-#pDataTable tbody td:nth-child(10)
-#  ARAÇ TİPİ
-#pDataTable tbody td:nth-child(11)
-#  MOTOR TİPİ
-#pDataTable tbody td:nth-child(12)
-#  LİSTE FİYAT
-#pDataTable tbody td:nth-child(16)
-#  KDV'Lİ MALİYET
-#pDataTable tbody td:nth-child(17)
-#  STOK
-#pDataTable tbody td:nth-child(18) span:nth-child(2)
 
-
-
-
-
-# MOTOR AŞİN DOM SELECTORS
-# MARKA
-# .table-products tbody:nth-of-type(2) tr:nth-child(1) td:nth-child(6) span span
-# ÜRETİCİ KODU
-# .table-products tbody:nth-of-type(2) tr:nth-child(1) td:nth-child(7) span
-#  OEM
-# .table-products tbody:nth-of-type(2) tr:nth-child(1) td:nth-child(4) span
-#  ÜRÜN ADI
-# .table-products tbody:nth-of-type(2) tr:nth-child(1) td:nth-child(5) span
-
-# YOK
-#  AÇIKLAMA
-# .table-products tbody:nth-of-type(2) tr:nth-child(1) td:nth-child(6)
-#  İÇERİK
-# .table-products tbody:nth-of-type(2) tr:nth-child(1) td:nth-child(6)
-#  ARAÇ TİPİ
-# .table-products tbody:nth-of-type(2) tr:nth-child(1) td:nth-child(6)
-#  MOTOR TİPİ
-# .table-products tbody:nth-of-type(2) tr:nth-child(1) td:nth-child(6)
-# YOK
-
-#  LİSTE FİYAT
-# .table-products tbody:nth-of-type(2) tr:nth-child(1) td:nth-child(8) span font:not(.ng-hide)
-#  KDV'Lİ MALİYET
-# .table-products tbody:nth-of-type(2) tr:nth-child(1) td:nth-child(10) span span:not(.ng-hide)
-#  STOK
-# .table-products tbody:nth-of-type(2) tr:nth-child(1) td:nth-child(11)
-
-
-
-
-
-# ARSAL OTO DOM SELECTORS
-# MARKA
-# .place-self-center .p-datatable-tbody tr:nth-of-type(1) td:nth-of-type(3) span [1]
-#  OEM
-# '.place-self-center .p-datatable-tbody tr:nth-of-type(1) td:nth-of-type(5)
-#  ÜRÜN ADI
-# .place-self-center .p-datatable-tbody tr:nth-of-type(1) td:nth-of-type(3) span [0]
-
-# YOK
-# ÜRETİCİ KODU
-# .table-products tbody tr:nth-child(1) td:nth-child(7) span
-#  AÇIKLAMA
-# .table-products tbody tr:nth-child(1) td:nth-child(6)
-#  İÇERİK
-# .table-products tbody tr:nth-child(1) td:nth-child(6)
-#  ARAÇ TİPİ
-# .table-products tbody tr:nth-child(1) td:nth-child(6)
-#  MOTOR TİPİ
-# .table-products tbody tr:nth-child(1) td:nth-child(6)
-#  LİSTE FİYAT
-# .table-products tbody tr:nth-child(1) td:nth-child(8) span font:not(.ng-hide)
-# YOK
-
-#  KDV'Lİ MALİYET
-# .place-self-center .p-datatable-tbody tr:nth-of-type(1) td:nth-of-type(8)
-#  STOK
-# .place-self-center .p-datatable-tbody tr:nth-of-type(1) td:nth-of-type(7) img[alt*="Yok"]
-# .place-self-center .p-datatable-tbody tr:nth-of-type(1) td:nth-of-type(7) img[alt*="Var"]
-
-
-
-
-
-# BAŞBUĞ OTO DOM SELECTORS
-# MARKA
-# #grAramaSonuc-body table[id^="tableview"]:nth-of-type(1) td:nth-of-type(1)
-#  OEM
-# #grAramaSonuc-body table[id^="tableview"]:nth-of-type(1) td:nth-of-type(3)
-#  ÜRÜN ADI
-# #grAramaSonuc-body table[id^="tableview"]:nth-of-type(1) td:nth-of-type(6)
-#  ARAÇ TİPİ
-# #grAramaSonuc-body table[id^="tableview"]:nth-of-type(1) td:nth-of-type(8)
-#  MOTOR TİPİ
-# #grAramaSonuc-body table[id^="tableview"]:nth-of-type(1) td:nth-of-type(9)
-
-# YOK
-# ÜRETİCİ KODU
-# .table-products tbody tr:nth-child(1) td:nth-child(7) span
-#  AÇIKLAMA
-# .table-products tbody tr:nth-child(1) td:nth-child(6)
-#  İÇERİK
-# .table-products tbody tr:nth-child(1) td:nth-child(6)
-# YOK
-
-# LİSTE FİYAT
-# #grAramaSonuc-body table[id^="tableview"]:nth-of-type(1) td:nth-of-type(11)
-# KDV'Lİ MALİYET
-# #grAramaSonuc-body table[id^="tableview"]:nth-of-type(1) td:nth-of-type(12)
-# STOK
-# #grAramaSonuc-body table[id^="tableview"]:nth-of-type(1) td:nth-of-type(15) img[src*="green"]
-# #grAramaSonuc-body table[id^="tableview"]:nth-of-type(1) td:nth-of-type(15) img[src*="pink"]
-# #grAramaSonuc-body table[id^="tableview"]:nth-of-type(1) td:nth-of-type(15) img[src*="red"]
-
-
-
-
-
- # BORUSAN OTO DOM SELECTORS
-# MARKA
-# #divItemResult table tbody tr:nth-of-type(2) td:nth-of-type(2)
-#  OEM
-# #divItemResult table tbody tr:nth-of-type(1) td:nth-of-type(2)
-#  ÜRÜN ADI
-# #divItemResult table tbody tr:nth-of-type(1) td:nth-of-type(4)
-
-
-# YOK
-# ÜRETİCİ KODU
-# .table-products tbody tr:nth-child(1) td:nth-child(7) span
-#  AÇIKLAMA
-# .table-products tbody tr:nth-child(1) td:nth-child(6)
-#  İÇERİK
-# .table-products tbody tr:nth-child(1) td:nth-child(6)
-#  ARAÇ TİPİ
-# #grAramaSonuc-body table[id^="tableview"]:nth-of-type(1) td:nth-of-type(8)
-#  MOTOR TİPİ
-# #grAramaSonuc-body table[id^="tableview"]:nth-of-type(1) td:nth-of-type(9)
-# YOK
-
-# LİSTE FİYAT
-# #divItemResult table tbody tr:nth-of-type(2) td:nth-of-type(4)
-# KDV'Lİ MALİYET
-# #divItemResult table tbody tr:nth-of-type(4) td:nth-of-type(4)
-# STOK
-# #divItemResult table tbody tr:nth-of-type(3) td:nth-of-type(2)
-
-
-
-
-
-# MERCANLAR OTO DOM SELECTORS
-#  MARKA
-# .result-container .product-item-wrapper:nth-of-type(1) .css-table .col:nth-of-type(2) .thumb-list-item-group:nth-of-type(3) .value
-#  OEM
-# .result-container .product-item-wrapper:nth-of-type(1) .css-table .col:nth-of-type(2) .thumb-list-item-group:nth-of-type(2) .value
-#  ÜRÜN ADI
-# .result-container .product-item-wrapper:nth-of-type(1) .css-table .col:nth-of-type(3) .thumb-list-item-group:nth-of-type(1) .value
-#  ÜRETİCİ KODU
-# .result-container .product-item-wrapper:nth-of-type(1) .css-table .col:nth-of-type(2) .thumb-list-item-group:nth-of-type(1) .value
-
-
-# YOK
-#  AÇIKLAMA
-# .table-products tbody tr:nth-child(1) td:nth-child(6)
-#  İÇERİK
-# .table-products tbody tr:nth-child(1) td:nth-child(6)
-#  ARAÇ TİPİ
-# #grAramaSonuc-body table[id^="tableview"]:nth-of-type(1) td:nth-of-type(8)
-#  MOTOR TİPİ
-# #grAramaSonuc-body table[id^="tableview"]:nth-of-type(1) td:nth-of-type(9)
-# YOK
-
-# LİSTE FİYAT
-# .result-container .product-item-wrapper:nth-of-type(1) .css-table .col:nth-of-type(6) .row:nth-of-type(1) .col-xs-4:nth-of-type(2) .value TRIM
-# KDV'Lİ MALİYET
-# .result-container .product-item-wrapper:nth-of-type(1) .css-table .col:nth-of-type(6) .row:nth-of-type(2) .total-price TRIM
-
-# STOK
-# .result-container .product-item-wrapper:nth-of-type(1) .css-table .col:nth-of-type(5) .thumb-list-item-group .value:nth-of-type(2) ul span
-# MEVCUT
-# #divItemResult table tbody tr:nth-of-type(3) td:nth-of-type(2)
-# KRİTİK SEVİYEDE
-# #divItemResult table tbody tr:nth-of-type(3) td:nth-of-type(2)
-# YOK
-# #divItemResult table tbody tr:nth-of-type(3) td:nth-of-type(2)
-# SORUNUZ
-# #divItemResult table tbody tr:nth-of-type(3) td:nth-of-type(2)
-
-
-
-
-
-
-# BABACAN OTO DOM SELECTORS
-#  MARKA
-# #gvResult .Row:nth-of-type(1) .Cell:nth-of-type(5)
-#  ÜRÜN ADI
-# #gvResult .Row:nth-of-type(1) .Cell:nth-of-type(3)
-#  ARAÇ TİPİ
-# #gvResult .Row:nth-of-type(1) .Cell:nth-of-type(4)
-
-
-# YOK
-#  OEM
-# .result-container .product-item-wrapper:nth-of-type(1) .css-table .col:nth-of-type(2) .thumb-list-item-group:nth-of-type(2) .value
-#  ÜRETİCİ KODU
-# .result-container .product-item-wrapper:nth-of-type(1) .css-table .col:nth-of-type(2) .thumb-list-item-group:nth-of-type(1) .value
-#  İÇERİK
-# .table-products tbody tr:nth-child(1) td:nth-child(6)
-#  AÇIKLAMA
-# .table-products tbody tr:nth-child(1) td:nth-child(6)
-#  MOTOR TİPİ
-# #grAramaSonuc-body table[id^="tableview"]:nth-of-type(1) td:nth-of-type(9)
-# YOK
-
-# LİSTE FİYAT
-# #gvResult .Row:nth-of-type(1) .Cell:nth-of-type(8)
-# KDV'Lİ MALİYET
-# #gvResult .Row:nth-of-type(1) .Cell:nth-of-type(8) - '-'
-
-# STOK
-# MEVCUT
-# #gvResult .Row:nth-of-type(1) .Cell:nth-of-type(6) img[src*="green"]
-# YOK
-# #gvResult .Row:nth-of-type(1) .Cell:nth-of-type(6) img[src*="red"]
 
 
 
@@ -283,78 +39,58 @@ class App(customtkinter.CTk):
         self.title("Çobanoğlu Parça Sorgulama")
         self.geometry(f"{1100}x{580}")
 
-        # --------------------------------------
+        # Grid configuration
+        self.configure_grid()
 
+        # Create frame
+        self.create_frame()
 
-        # NEW
+        # Create entry and search button
+        self.create_entry_and_button()
+
+    def configure_grid(self):
+        # Grid configuration
         self.grid_columnconfigure(1, weight=1)
-
         self.grid_columnconfigure((2, 3), weight=0)
         self.grid_rowconfigure((0, 1, 2), weight=0)
-        # self.grid_columnconfigure(1, weight=1)
-        # self.grid_rowconfigure(2, weight=1)
 
-      
-
+    def create_frame(self):
+        # Create frame
         self.frame = customtkinter.CTkFrame(master=self, corner_radius=0)
         self.frame.grid(row=0, column=1, rowspan=1, pady=0, padx=0, sticky="nsew")
-
-        # LEFT
-        
-
-
-        # RIGHT
         self.frame.grid_rowconfigure(1, weight=1)
         self.frame.grid_rowconfigure(0, weight=0)
         self.frame.grid_columnconfigure(0, weight=1)
         self.frame.grid_columnconfigure(1, weight=0)
         self.frame.grid_columnconfigure(2, weight=1)
 
-        
-       
-
-        self.entry = customtkinter.CTkEntry(master=self.frame,
-                                            placeholder_text="OEM NO")
+    def create_entry_and_button(self):
+        # Create entry and search button
+        self.entry = customtkinter.CTkEntry(master=self.frame, placeholder_text="OEM NO")
         self.entry.grid(row=0, column=1, sticky="we", padx=(12, 0), pady=12)
         self.entry.bind("<Return>", command=self.searchPart)
 
-        self.search_button = customtkinter.CTkButton(master=self.frame,
-                                                text="ARA",
-                                                width=90, command=self.searchPart, fg_color="#0054ac")
+        self.search_button = customtkinter.CTkButton(master=self.frame, text="ARA", width=90, command=self.searchPart, fg_color="#0054ac")
         self.search_button.grid(row=0, column=2, sticky="w", padx=(12, 0), pady=12)
 
 
-        # self.scrollable_frame = customtkinter.CTkScrollableFrame(self.frame)
-        # self.scrollable_frame.grid(row=1, column=0, columnspan=3, padx=10, pady=(0,10), sticky="nsew")
-
-    def open_input_dialog_event(self):
-        dialog = customtkinter.CTkInputDialog(text="Type in a number:", title="CTkInputDialog")
-
-    def change_appearance_mode_event(self, new_appearance_mode: str):
-        customtkinter.set_appearance_mode(new_appearance_mode)
-
-    def change_scaling_event(self, new_scaling: str):
-        new_scaling_float = int(new_scaling.replace("%", "")) / 100
-        customtkinter.set_widget_scaling(new_scaling_float)
-
-    def sidebar_button_event(self):
-        print("sidebar_button click")
-
-    @cached_property
-    def driver(self):
-        firefox_options = Options();
-        firefox_options.add_argument("-profile")
-        # user_profile
-        user_profile_name = "User"
-        # user_profile_name = "dbura"
-        firefox_options.add_argument("C:/Users/"+ user_profile_name + "/AppData/Roaming/Mozilla/Firefox/Profiles/searchpartuser")
+    # @cached_property
+    # def driver(self):
+    #     firefox_options = Options();
+    #     firefox_options.add_argument("-profile")
+    #     # user_profile
+    #     user_profile_name = "User"
+    #     # user_profile_name = "dbura"
+    #     firefox_options.add_argument("C:/Users/"+ user_profile_name + "/AppData/Roaming/Mozilla/Firefox/Profiles/searchpartuser")
        
 
-        return webdriver.Firefox(service=Service('./geckodriver.exe'), options=firefox_options)
+    #     return webdriver.Firefox(service=Service('./geckodriver.exe'), options=firefox_options)
 
     def checkIfTabActive(self, index):
-        parent_handle = self.driver.current_window_handle
-        all_handles = self.driver.window_handles
+        parent_handle = driver.current_window_handle
+        all_handles = driver.window_handles
+        print("parent handle", parent_handle)
+        print("all_handles", all_handles)
        
         if (len(all_handles) < index + 1):
             return False;
@@ -362,7 +98,7 @@ class App(customtkinter.CTk):
         for handle in all_handles:
             if handle != parent_handle:
                 tab_id = all_handles[index]
-                self.driver.switch_to.window(tab_id)
+                driver.switch_to.window(tab_id)
                 return True
                 break
     
@@ -380,10 +116,10 @@ class App(customtkinter.CTk):
 
 
     async def loginGenelOtoUser(self, customer_code_value, user_code_value, password_value, searchURL):
-        customer_code = self.driver.find_element(By.ID, "CustomerCode") 
-        user_code = self.driver.find_element(By.ID, "UserCode") 
-        password = self.driver.find_element(By.ID, "Password") 
-        login_button = self.driver.find_element(By.ID, "btnLogin") 
+        customer_code = driver.find_element(By.ID, "CustomerCode") 
+        user_code = driver.find_element(By.ID, "UserCode") 
+        password = driver.find_element(By.ID, "Password") 
+        login_button = driver.find_element(By.ID, "btnLogin") 
         # FILL DOM ELEMENTS
         customer_code.send_keys(customer_code_value)
         user_code.send_keys(user_code_value)
@@ -396,12 +132,12 @@ class App(customtkinter.CTk):
     
     async def runTabControlProcessGenelOto(self, is_tab_active, mainURL, homeURL, searchURL, customer_code_value, user_code_value, password_value):
             # if (self.driver.current_url != homeURL or self.driver.current_url != searchURL):
-            self.driver.get(mainURL)
+            driver.get(mainURL)
             # LOGGED IN KONTROLÜ EKLENECEK
             # GET DOM ELEMENTS
             try:
-                WebDriverWait(self.driver, 2).until(expected_conditions.visibility_of_element_located((By.ID, "CustomerCode")))
-                if (self.driver.find_element(By.ID, "CustomerCode")):
+                WebDriverWait(driver, 2).until(expected_conditions.visibility_of_element_located((By.ID, "CustomerCode")))
+                if (driver.find_element(By.ID, "CustomerCode")):
                     await self.loginGenelOtoUser(customer_code_value, user_code_value, password_value, searchURL)    
             except:
                 self.searchGenelOtoPart(searchURL)
@@ -413,15 +149,15 @@ class App(customtkinter.CTk):
     
 
     def searchGenelOtoPart(self, searchURL):
-        if (self.driver.current_url != searchURL):
-            self.driver.get(searchURL)
+        if (driver.current_url != searchURL):
+            driver.get(searchURL)
             # time.sleep(4)
-            search_panel = WebDriverWait(self.driver, 10).until(expected_conditions.visibility_of_element_located((By.CSS_SELECTOR, ".panelLoading.search-loading")))
-            WebDriverWait(self.driver, 10).until(lambda d: 'search-loading' not in search_panel.get_attribute('class'))
+            search_panel = WebDriverWait(driver, 10).until(expected_conditions.visibility_of_element_located((By.CSS_SELECTOR, ".panelLoading.search-loading")))
+            WebDriverWait(driver, 10).until(lambda d: 'search-loading' not in search_panel.get_attribute('class'))
             print('genel redirected to search')
             
         time.sleep(1.5)
-        oem_search = self.driver.find_element(By.ID, "txtGeneralSearch")
+        oem_search = driver.find_element(By.ID, "txtGeneralSearch")
         print('oem_search', oem_search)
         oem_search.send_keys(Keys.CONTROL + "a")
         oem_search.send_keys(Keys.DELETE)  
@@ -435,9 +171,9 @@ class App(customtkinter.CTk):
         # table_body = data_table.find('tbody')
 
 
-        dom_elements = self.driver.find_elements(By.CSS_SELECTOR, "#tbResult tr")
+        dom_elements = driver.find_elements(By.CSS_SELECTOR, "#tbResult tr")
 
-        table_data = self.driver.find_element(By.CSS_SELECTOR, "#tbResult")
+        table_data = driver.find_element(By.CSS_SELECTOR, "#tbResult")
 
 
 
@@ -493,6 +229,8 @@ class App(customtkinter.CTk):
 
         is_tab_active = self.checkIfTabActive(0)
 
+        print("is tab active genel oto", is_tab_active)
+
         if (is_tab_active):
             self.searchGenelOtoPart(searchURL)
         else:
@@ -501,17 +239,18 @@ class App(customtkinter.CTk):
         # WAIT FOR DOM TO LOAD
         try: 
             time.sleep(1)
-            alert = self.driver.find_element(By.CSS_SELECTOR, '#divSearchTable .alert')
+            alert = driver.find_element(By.CSS_SELECTOR, '#divSearchTable .alert')
             no_record = ['','','','','','KAYIT BULUNAMADI','','','','']
             data1.extend(no_record)  
             return data1;      
         except:
-            WebDriverWait(self.driver, 1000).until(expected_conditions.visibility_of_element_located((By.CSS_SELECTOR, "#pDataTable tbody td:nth-child(5)")))
+            WebDriverWait(driver, 1000).until(expected_conditions.visibility_of_element_located((By.CSS_SELECTOR, "#pDataTable tbody td:nth-child(5)")))
             # GET ROW COUNT 
-            if (self.driver.find_elements(By.CSS_SELECTOR, "#tbResult tr")):
+            if (driver.find_elements(By.CSS_SELECTOR, "#tbResult tr")):
                 data1 = self.extractGenelOtoPartData(data1)
                 return data1;
-            
+
+
     def getMotorAsinVariables(self):
         mainURL = 'https://b4b.motorasin.com';
         usr_value = "BPR.034.212"
