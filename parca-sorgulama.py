@@ -158,7 +158,6 @@ class App(customtkinter.CTk):
             
         time.sleep(1.5)
         oem_search = driver.find_element(By.ID, "txtGeneralSearch")
-        print('oem_search', oem_search)
         oem_search.send_keys(Keys.CONTROL + "a")
         oem_search.send_keys(Keys.DELETE)  
         oem_search.send_keys(self.user_input)
@@ -166,70 +165,87 @@ class App(customtkinter.CTk):
         print('genel search ended')
 
     def extractGenelOtoPartData(self, data1):
-      
-
-        # table_body = data_table.find('tbody')
-
-
         dom_elements = driver.find_elements(By.CSS_SELECTOR, "#tbResult tr")
 
         table_data = driver.find_element(By.CSS_SELECTOR, "#tbResult")
-
-
-
        
         row_count = len(dom_elements);
 
+        # for i in range(row_count):
+
+            
+        #     brand_selector = 'tr:nth-child(' + str(i + 1) + ') td:nth-child(5)';
+        #     brand = table_data.find_elements(By.CSS_SELECTOR, brand_selector)[0].text
+
+        #     manufacturer_code_selector = 'tr:nth-child(' + str(i + 1) + ') td:nth-child(6)';
+        #     manufacturer_code = table_data.find_elements(By.CSS_SELECTOR, manufacturer_code_selector)[0].text
+
+        #     oem_no_selector = 'tr:nth-child(' + str(i + 1) + ') td:nth-child(7)';
+        #     oem_no = table_data.find_elements(By.CSS_SELECTOR, oem_no_selector)[0].text
+
+        #     product_name_selector =  'tr:nth-child(' + str(i + 1) + ') td:nth-child(8)';
+        #     product_name = table_data.find_elements(By.CSS_SELECTOR, product_name_selector)[0].text
+
+        #     desc_selector = 'tr:nth-child(' + str(i + 1) + ') td:nth-child(9)';
+        #     desc = table_data.find_elements(By.CSS_SELECTOR, desc_selector)[0].text
+
+        #     content_selector = 'tr:nth-child(' + str(i + 1) + ') td:nth-child(10)';
+        #     content = table_data.find_elements(By.CSS_SELECTOR, content_selector)[0].text
+
+        #     car_type_selector = 'tr:nth-child(' + str(i + 1) + ') td:nth-child(11)';
+        #     car_type = table_data.find_elements(By.CSS_SELECTOR, car_type_selector)[0].text
+
+        #     engine_type_selector = 'tr:nth-child(' + str(i + 1) + ') td:nth-child(12)';
+        #     engine_type = table_data.find_elements(By.CSS_SELECTOR, engine_type_selector)[0].text
+
+        #     list_price_selector = 'tr:nth-child(' + str(i + 1) + ') td:nth-child(16)';
+        #     list_price = table_data.find_elements(By.CSS_SELECTOR, list_price_selector)[0].text
+
+        #     tax_included_price_selector = 'tr:nth-child(' + str(i + 1) + ') td:nth-child(17)'
+        #     tax_included_price = table_data.find_elements(By.CSS_SELECTOR, tax_included_price_selector)[0].text
+
+        #     stock_selector = 'tr:nth-child(' + str(i + 1) + ') td:nth-child(18) span:nth-child(2)';
+        #     stock = table_data.find_elements(By.CSS_SELECTOR, stock_selector)[0].text
+            
+        #     values = [brand, manufacturer_code, oem_no, product_name, desc, car_type, engine_type, list_price, tax_included_price, stock]
+        #     data1.extend(values)
+            
+        # return data1;
+
         for i in range(row_count):
+            row_index = i + 1
+            row_selector = f"tr:nth-child({row_index})"
 
-            
-            brand_selector = 'tr:nth-child(' + str(i + 1) + ') td:nth-child(5)';
-            brand = table_data.find_elements(By.CSS_SELECTOR, brand_selector)[0].text
+            selectors = {
+                "brand": "td:nth-child(5)",
+                "manufacturer_code": "td:nth-child(6)",
+                "oem_no": "td:nth-child(7)",
+                "product_name": "td:nth-child(8)",
+                "desc": "td:nth-child(9)",
+                "car_type": "td:nth-child(11)",
+                "engine_type": "td:nth-child(12)",
+                "list_price": "td:nth-child(16)",
+                "tax_included_price": "td:nth-child(17)",
+                "stock": "td:nth-child(18) span:nth-child(2)"
+            }
 
-            manufacturer_code_selector = 'tr:nth-child(' + str(i + 1) + ') td:nth-child(6)';
-            manufacturer_code = table_data.find_elements(By.CSS_SELECTOR, manufacturer_code_selector)[0].text
+            values = []
+            for key, selector in selectors.items():
+                full_selector = f"{row_selector} {selector}"
+                value = table_data.find_elements(By.CSS_SELECTOR, full_selector)[0].text
+                values.append(value)
 
-            oem_no_selector = 'tr:nth-child(' + str(i + 1) + ') td:nth-child(7)';
-            oem_no = table_data.find_elements(By.CSS_SELECTOR, oem_no_selector)[0].text
-
-            product_name_selector =  'tr:nth-child(' + str(i + 1) + ') td:nth-child(8)';
-            product_name = table_data.find_elements(By.CSS_SELECTOR, product_name_selector)[0].text
-
-            desc_selector = 'tr:nth-child(' + str(i + 1) + ') td:nth-child(9)';
-            desc = table_data.find_elements(By.CSS_SELECTOR, desc_selector)[0].text
-
-            content_selector = 'tr:nth-child(' + str(i + 1) + ') td:nth-child(10)';
-            content = table_data.find_elements(By.CSS_SELECTOR, content_selector)[0].text
-
-            car_type_selector = 'tr:nth-child(' + str(i + 1) + ') td:nth-child(11)';
-            car_type = table_data.find_elements(By.CSS_SELECTOR, car_type_selector)[0].text
-
-            engine_type_selector = 'tr:nth-child(' + str(i + 1) + ') td:nth-child(12)';
-            engine_type = table_data.find_elements(By.CSS_SELECTOR, engine_type_selector)[0].text
-
-            list_price_selector = 'tr:nth-child(' + str(i + 1) + ') td:nth-child(16)';
-            list_price = table_data.find_elements(By.CSS_SELECTOR, list_price_selector)[0].text
-
-            tax_included_price_selector = 'tr:nth-child(' + str(i + 1) + ') td:nth-child(17)'
-            tax_included_price = table_data.find_elements(By.CSS_SELECTOR, tax_included_price_selector)[0].text
-
-            stock_selector = 'tr:nth-child(' + str(i + 1) + ') td:nth-child(18) span:nth-child(2)';
-            stock = table_data.find_elements(By.CSS_SELECTOR, stock_selector)[0].text
-            
-            values = [brand, manufacturer_code, oem_no, product_name, desc, car_type, engine_type, list_price, tax_included_price, stock]
-            # values = [brand, manufacturer_code, oem_no, product_name, desc, car_type, engine_type, list_price, tax_included_price, '🟢']
             data1.extend(values)
-            
         return data1;
-
-
+   
+       
+    
+   
     async def genelOtoSearch(self):
         mainURL, homeURL, searchURL, data1, customer_code_value, user_code_value, password_value = self.getGenelOtoVariables()
         
 
         is_tab_active = self.checkIfTabActive(0)
-
-        print("is tab active genel oto", is_tab_active)
 
         if (is_tab_active):
             self.searchGenelOtoPart(searchURL)
@@ -239,7 +255,7 @@ class App(customtkinter.CTk):
         # WAIT FOR DOM TO LOAD
         try: 
             time.sleep(1)
-            alert = driver.find_element(By.CSS_SELECTOR, '#divSearchTable .alert')
+            driver.find_element(By.CSS_SELECTOR, '#divSearchTable .alert')
             no_record = ['','','','','','KAYIT BULUNAMADI','','','','']
             data1.extend(no_record)  
             return data1;      
@@ -1232,6 +1248,8 @@ class App(customtkinter.CTk):
        
         # # ROW COUNT DİNAMİK YAPILACAK
         row_count = int(len(self.data) / 10);
+
+
         
         self.data = np.reshape(self.data, [row_count, column_count])
         self.data = list(self.data)
